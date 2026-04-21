@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0D0D0F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="LotCalc Pro">
+<meta name="application-name" content="LotCalc Pro">
+<meta name="description" content="Calculateur de taille de lot Forex, Or, Nasdaq">
+<title>LotCalc Pro</title>
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkxvdENhbGMgUHJvIiwKICAic2hvcnRfbmFtZSI6ICJMb3RDYWxjIiwKICAiZGVzY3JpcHRpb24iOiAiQ2FsY3VsYXRldXIgZGUgbG90IEZvcmV4LCBPciwgTmFzZGFxIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJzY29wZSI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwRDBEMEYiLAogICJ0aGVtZV9jb2xvciI6ICIjMEQwRDBGIiwKICAibGFuZyI6ICJmciIsCiAgImRpciI6ICJsdHIiLAogICJjYXRlZ29yaWVzIjogWwogICAgImZpbmFuY2UiLAogICAgInV0aWxpdGllcyIKICBdLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJpY29uLTE5Mi5wbmciLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbi01MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
+<meta name="application-name" content="LotCalc Pro">
+<meta name="apple-mobile-web-app-title" content="LotCalc Pro">
+<meta name="description" content="Calculateur de lot Forex, Or, Nasdaq">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#0D0D0F;--bg2:#141417;--bg3:#1C1C21;--bg4:#242429;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#F0F0F5;--text2:#9090A0;--text3:#5A5A6A;--accent:#6C63FF;--accent2:#8B85FF;--accent-bg:rgba(108,99,255,0.12);--accent-border:rgba(108,99,255,0.35);--green:#00C896;--green-bg:rgba(0,200,150,0.10);--green-border:rgba(0,200,150,0.30);--red:#FF5566;--red-bg:rgba(255,85,102,0.10);--red-border:rgba(255,85,102,0.30);--gold:#F5A623;--gold-bg:rgba(245,166,35,0.10);--gold-border:rgba(245,166,35,0.30);--radius:16px;--radius-sm:10px;--radius-xs:7px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro Display','Segoe UI',sans-serif;overflow-x:hidden}
+body{display:flex;flex-direction:column;min-height:100vh}
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.header-logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:18px;font-weight:700;letter-spacing:-0.3px}
+.logo-text span{color:var(--accent2)}
+.header-sub{font-size:11px;color:var(--text3);margin-top:1px;letter-spacing:0.3px}
+.main{flex:1;padding:16px 16px 32px;max-width:480px;margin:0 auto;width:100%}
+.section-label{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:10px}
+.asset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.asset-btn{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.18s;user-select:none}
+.asset-btn:active{transform:scale(0.96)}
+.asset-btn.active{background:var(--accent-bg);border-color:var(--accent-border)}
+.asset-btn.active.gold-t{background:var(--gold-bg);border-color:var(--gold-border)}
+.asset-btn.active.nas-t{background:var(--green-bg);border-color:var(--green-border)}
+.asset-icon{font-size:24px;margin-bottom:6px}
+.asset-name{font-size:12px;font-weight:700;color:var(--text)}
+.asset-full{font-size:10px;color:var(--text3);margin-top:2px}
+.asset-btn.active .asset-name{color:var(--accent2)}
+.asset-btn.active.gold-t .asset-name{color:var(--gold)}
+.asset-btn.active.nas-t .asset-name{color:var(--green)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:16px;display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:0.5px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.dot.gold{background:var(--gold)}
+.dot.green{background:var(--green)}
+.input-group{margin-bottom:14px}
+.input-group:last-child{margin-bottom:0}
+.input-label{font-size:12px;color:var(--text3);margin-bottom:8px;display:flex;justify-content:space-between}
+.input-wrap{position:relative}
+.input-wrap input{width:100%;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius-xs);padding:14px 52px 14px 14px;font-size:17px;color:var(--text);outline:none;transition:border-color 0.15s;-webkit-appearance:none;font-weight:500}
+.input-wrap input:focus{border-color:var(--accent)}
+.input-wrap input.gf:focus{border-color:var(--gold)}
+.input-wrap input.nf:focus{border-color:var(--green)}
+.input-unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text3);pointer-events:none;font-weight:700;letter-spacing:0.3px}
+.input-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.risk-pct-badge{display:inline-block;background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;color:var(--accent2);margin-top:8px}
+.risk-pct-badge.gold{background:var(--gold-bg);border-color:var(--gold-border);color:var(--gold)}
+.risk-pct-badge.green{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.pip-info{background:var(--bg3);border-radius:var(--radius-sm);padding:11px 14px;margin-top:14px;font-size:11px;color:var(--text3);line-height:1.6;border-left:3px solid var(--accent)}
+.pip-info strong{color:var(--text2)}
+.results-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.result-main{text-align:center;padding:8px 0 18px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.result-main-label{font-size:11px;color:var(--text3);margin-bottom:8px;letter-spacing:0.8px;text-transform:uppercase}
+.result-lot{font-size:56px;font-weight:800;letter-spacing:-2px;line-height:1;color:var(--accent2);transition:all 0.2s}
+.result-lot.gold{color:var(--gold)}
+.result-lot.green{color:var(--green)}
+.result-lot-sub{font-size:12px;color:var(--text3);margin-top:8px;font-weight:500}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ri{background:var(--bg3);border-radius:var(--radius-sm);padding:13px}
+.ri-label{font-size:10px;color:var(--text3);margin-bottom:6px;letter-spacing:0.5px;text-transform:uppercase}
+.ri-val{font-size:19px;font-weight:700;color:var(--text)}
+.ri-val.red{color:var(--red)}
+.ri-val.green{color:var(--green)}
+.ri-sub{font-size:10px;color:var(--text3);margin-top:3px}
+.rr-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.rr-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.toggle-sw{width:46px;height:27px;background:var(--bg4);border-radius:14px;position:relative;transition:background 0.2s;border:1px solid var(--border2);flex-shrink:0}
+.toggle-sw.on{background:var(--accent);border-color:var(--accent)}
+.toggle-knob{position:absolute;width:21px;height:21px;background:white;border-radius:50%;top:2px;left:2px;transition:transform 0.2s}
+.toggle-sw.on .toggle-knob{transform:translateX(19px)}
+.rr-body{margin-top:16px;display:none}
+.rr-body.show{display:block}
+.rr-result{display:flex;align-items:center;justify-content:space-between;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:15px;margin-top:12px}
+.rr-ratio{font-size:24px;font-weight:800;color:var(--green)}
+.rr-gain{font-size:20px;font-weight:700;color:var(--green);text-align:right}
+.rr-gl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px}
+.warn{background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--radius-sm);padding:11px 14px;margin-top:12px;font-size:12px;color:var(--red);display:none}
+.warn.show{display:block}
+.formula{background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px;margin-top:12px;font-size:11px;color:var(--text3);line-height:1.7}
+.formula code{font-family:monospace;font-size:11px;background:var(--bg4);padding:1px 6px;border-radius:4px;color:var(--accent2)}
+
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+.pop{animation:pop 0.25s ease}
+</style>
+
+<script>
+// Create and inject manifest link for PWABuilder detection
+(function() {
+  var manifestData = {
+  "name": "LotCalc Pro",
+  "short_name": "LotCalc",
+  "description": "Calculateur de lot Forex, Or, Nasdaq",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0D0D0F",
+  "theme_color": "#0D0D0F",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": [
+    "finance",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+};
+  var blob = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = url;
+  document.head.appendChild(link);
+})();
+</script>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <div class="logo-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="11" width="3" height="7" rx="1" fill="#6C63FF"/>
+        <rect x="7" y="7" width="3" height="11" rx="1" fill="#8B85FF"/>
+        <rect x="12" y="3" width="3" height="15" rx="1" fill="#6C63FF"/>
+        <line x1="17" y1="3" x2="17" y2="17" stroke="#5A5AFF" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">Lot<span>Calc</span> Pro</div>
+      <div class="header-sub">CALCULATEUR DE POSITION</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section-label">Sélectionner l'actif</div>
+  <div class="asset-grid">
+    <div class="asset-btn active" id="btn-eur" onclick="selectAsset('EURUSD')">
+      <div class="asset-icon">🇪🇺</div>
+      <div class="asset-name">EUR/USD</div>
+      <div class="asset-full">Forex majeure</div>
+    </div>
+    <div class="asset-btn gold-t" id="btn-xau" onclick="selectAsset('XAUUSD')">
+      <div class="asset-icon">🥇</div>
+      <div class="asset-name">XAU/USD</div>
+      <div class="asset-full">Or · Gold</div>
+    </div>
+    <div class="asset-btn nas-t" id="btn-nas" onclick="selectAsset('NAS100')">
+      <div class="asset-icon">📊</div>
+      <div class="asset-name">US100</div>
+      <div class="asset-full">Nasdaq Cash</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="dot" id="dot1"></div>Capital & Risque</div>
+    <div class="input-row2">
+      <div class="input-group" style="margin-bottom:0">
+        <div class="input-label">Capital total</div>
+        <div class="input-wrap">
+          <input type="number" id="capital" value="1000" inputmode="decimal" placeholder="1000">
+          <span class="input-unit">$</span>
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <div class="input-label">Risque en $</div>
+        <div class="input-wrap">
+          <input type="number" id="risk-dollar" value="10" inputmode="decimal" placeholder="10">
+          <span class="input-unit">$</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:10px;text-align:center">
+      <span class="risk-pct-badge" id="risk-pct-badge">= 1.0% du capital</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="dot" id="dot2"></div>Prix d'entrée & Stop Loss</div>
+    <div class="input-row2">
+      <div class="input-group" style="margin-bottom:0">
+        <div class="input-label">Prix d'entrée</div>
+        <div class="input-wrap">
+          <input type="number" id="entry" inputmode="decimal" placeholder="1.08500" id="inp-entry">
+          <span class="input-unit" id="unit-e">prix</span>
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <div class="input-label">Stop Loss</div>
+        <div class="input-wrap">
+          <input type="number" id="sl" inputmode="decimal" placeholder="1.08200">
+          <span class="input-unit">SL</span>
+        </div>
+      </div>
+    </div>
+    <div class="pip-info" id="pip-info">EUR/USD — 1 pip = 0.0001 · valeur pip : <strong>10$/lot</strong> · 1 lot = 100 000 unités</div>
+  </div>
+
+  <div class="rr-card">
+    <div class="rr-toggle" onclick="toggleRR()">
+      <div class="card-title" style="margin-bottom:0"><div class="dot green"></div>Take Profit & R/R <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px">(optionnel)</span></div>
+      <div class="toggle-sw" id="rr-sw"><div class="toggle-knob"></div></div>
+    </div>
+    <div class="rr-body" id="rr-body">
+      <div class="input-group" style="margin-top:14px;margin-bottom:0">
+        <div class="input-label">Prix Take Profit</div>
+        <div class="input-wrap">
+          <input type="number" id="tp" inputmode="decimal" placeholder="1.09200">
+          <span class="input-unit">TP</span>
+        </div>
+      </div>
+      <div class="rr-result" id="rr-result" style="display:none">
+        <div>
+          <div class="rr-gl">Ratio R/R</div>
+          <div class="rr-ratio" id="rr-ratio">1 : —</div>
+        </div>
+        <div style="text-align:right">
+          <div class="rr-gl">Gain potentiel</div>
+          <div class="rr-gain" id="rr-gain">+$—</div>
+          <div class="rr-gl" id="rr-pts" style="margin-top:2px">— pips</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-card">
+    <div class="result-main">
+      <div class="result-main-label">Taille de lot recommandée</div>
+      <div class="result-lot" id="res-lot">—</div>
+      <div class="result-lot-sub" id="res-lot-sub">Entrez vos données ci-dessus</div>
+    </div>
+    <div class="result-grid">
+      <div class="ri">
+        <div class="ri-label">Risque max</div>
+        <div class="ri-val red" id="res-risk">—</div>
+        <div class="ri-sub" id="res-risk-pct">— du capital</div>
+      </div>
+      <div class="ri">
+        <div class="ri-label">Distance SL</div>
+        <div class="ri-val" id="res-pips">—</div>
+        <div class="ri-sub" id="res-pip-unit">pips</div>
+      </div>
+      <div class="ri">
+        <div class="ri-label">Valeur pip/lot</div>
+        <div class="ri-val" id="res-pipval">—</div>
+        <div class="ri-sub">par lot standard</div>
+      </div>
+      <div class="ri">
+        <div class="ri-label">Type de lot</div>
+        <div class="ri-val" id="res-lottype" style="font-size:14px">—</div>
+        <div class="ri-sub" id="res-lottype-sub">—</div>
+      </div>
+    </div>
+    <div class="formula" id="formula-box" style="display:none"></div>
+    <div class="warn" id="warning">⚠ Risque &gt; 2% du capital — au-delà des recommandations professionnelles.</div>
+  </div>
+
+</div>
+
+<script>
+const A={
+  EURUSD:{name:'EUR/USD',pip:0.0001,pipVal:10,notional:100000,unit:'pips',dec:5,cls:'',info:'EUR/USD — 1 pip = 0.0001 · valeur pip : <strong>10$/lot</strong> · 1 lot = 100 000 unités',ph:'1.08500',slph:'1.08200',tpph:'1.09200'},
+  XAUUSD:{name:'XAU/USD',pip:0.01,pipVal:1,notional:100,unit:'$',dec:2,cls:'gold',info:'XAU/USD (Or) — 1 pip = 0.01$ · valeur pip : <strong>1$/lot</strong> · 1 lot = 100 oz d\'or',ph:'2320.00',slph:'2300.00',tpph:'2360.00'},
+  NAS100:{name:'US100 Cash',pip:1,pipVal:1,notional:19000,unit:'pts',dec:1,cls:'green',info:'US100 Cash — 1 pip = 1 point · valeur pip : <strong>1$/lot</strong> · Vérifier sur votre broker (peut varier)',ph:'19200',slph:'19100',tpph:'19500'}
+};
+let cur='EURUSD',rrOn=false;
+
+function selectAsset(a){
+  cur=a;
+  document.querySelectorAll('.asset-btn').forEach(b=>b.classList.remove('active'));
+  const m={EURUSD:'btn-eur',XAUUSD:'btn-xau',NAS100:'btn-nas'};
+  document.getElementById(m[a]).classList.add('active');
+  const as=A[a],c=as.cls;
+  document.getElementById('pip-info').innerHTML=as.info;
+  document.getElementById('res-lot').className='result-lot '+(c==='gold'?'gold':c==='green'?'green':'');
+  const badge=document.getElementById('risk-pct-badge');
+  badge.className='risk-pct-badge'+(c==='gold'?' gold':c==='green'?' green':'');
+  document.getElementById('dot1').className='dot '+(c||'');
+  document.getElementById('dot2').className='dot '+(c||'');
+  ['entry','sl','tp'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.className=c==='gold'?'gf':c==='green'?'nf':'';
+  });
+  document.getElementById('entry').placeholder=as.ph;
+  document.getElementById('sl').placeholder=as.slph;
+  document.getElementById('tp').placeholder=as.tpph;
+  document.getElementById('unit-e').textContent=as.unit.replace('pips','prix').replace('pts','prix').replace('$','prix');
+  calculate();
+}
+
+function updateBadge(){
+  const cap=parseFloat(document.getElementById('capital').value);
+  const rd=parseFloat(document.getElementById('risk-dollar').value);
+  const badge=document.getElementById('risk-pct-badge');
+  if(cap>0&&rd>0&&!isNaN(cap)&&!isNaN(rd)){
+    const pct=(rd/cap*100);
+    badge.textContent='= '+pct.toFixed(2)+'% du capital';
+    const as=A[cur],c=as.cls;
+    badge.className='risk-pct-badge'+(c==='gold'?' gold':c==='green'?' green':'');
+  } else {
+    badge.textContent='— % du capital';
+  }
+}
+
+function toggleRR(){
+  rrOn=!rrOn;
+  document.getElementById('rr-sw').classList.toggle('on',rrOn);
+  document.getElementById('rr-body').classList.toggle('show',rrOn);
+  if(rrOn)calculate();
+}
+
+function calculate(){
+  const cap=parseFloat(document.getElementById('capital').value);
+  const riskAmt=parseFloat(document.getElementById('risk-dollar').value);
+  const entry=parseFloat(document.getElementById('entry').value);
+  const sl=parseFloat(document.getElementById('sl').value);
+  const tp=parseFloat(document.getElementById('tp').value);
+  const as=A[cur];
+
+  updateBadge();
+
+  if(!riskAmt||!entry||!sl||isNaN(riskAmt)||isNaN(entry)||isNaN(sl)||entry===sl){
+    document.getElementById('res-lot').textContent='—';
+    document.getElementById('res-lot-sub').textContent='Entrez risque, entrée et SL';
+    document.getElementById('res-risk').textContent='—';
+    document.getElementById('res-pips').textContent='—';
+    document.getElementById('res-pipval').textContent='$'+as.pipVal.toFixed(2);
+    document.getElementById('res-lottype').textContent='—';
+    document.getElementById('formula-box').style.display='none';
+    return;
+  }
+
+  const riskPct=cap>0?(riskAmt/cap*100):0;
+  const slDist=Math.abs(entry-sl);
+  const slPips=Math.round((slDist/as.pip)*100)/100;
+  const lot=riskAmt/(slPips*as.pipVal);
+  const lotR=Math.round(lot*100)/100;
+
+  let lotSub='lot standard';
+  if(lotR<0.01){lotSub='nano-lot';}
+  else if(lotR<0.1){lotSub='micro-lot';}
+  else if(lotR<1){lotSub='mini-lot';}
+  else{lotSub='lot standard';}
+
+  const lotEl=document.getElementById('res-lot');
+  lotEl.textContent=lotR.toFixed(2);
+  lotEl.classList.add('pop');
+  setTimeout(()=>lotEl.classList.remove('pop'),300);
+
+  document.getElementById('res-lot-sub').textContent=lotSub;
+  document.getElementById('res-risk').textContent='-$'+riskAmt.toFixed(2);
+  document.getElementById('res-risk-pct').textContent=(cap>0?riskPct.toFixed(2)+'%':'—')+' du capital';
+  document.getElementById('res-pips').textContent=slPips.toFixed(1);
+  document.getElementById('res-pip-unit').textContent=as.unit;
+  document.getElementById('res-pipval').textContent='$'+as.pipVal.toFixed(2);
+  document.getElementById('res-lottype').textContent=lotR.toFixed(2);
+  document.getElementById('res-lottype-sub').textContent=lotSub;
+
+  const fb=document.getElementById('formula-box');
+  fb.style.display='block';
+  fb.innerHTML='<strong style="color:var(--text2)">Formule</strong><br>Risque = <code>$'+riskAmt.toFixed(2)+'</code> · SL = <code>'+slPips.toFixed(1)+' '+as.unit+'</code> · Pip = <code>$'+as.pipVal+'/lot</code><br>Lot = <code>'+riskAmt.toFixed(2)+' ÷ ('+slPips.toFixed(1)+' × '+as.pipVal+') = '+lotR.toFixed(2)+'</code>';
+
+  document.getElementById('warning').className='warn'+(riskPct>2?' show':'');
+
+  if(rrOn&&!isNaN(tp)&&tp>0&&tp!==entry){
+    const tpDist=Math.abs(tp-entry);
+    const tpPips=Math.round((tpDist/as.pip)*100)/100;
+    const rr=tpPips/slPips;
+    const gain=riskAmt*rr;
+    document.getElementById('rr-ratio').textContent='1 : '+rr.toFixed(1);
+    document.getElementById('rr-gain').textContent='+$'+gain.toFixed(2);
+    document.getElementById('rr-pts').textContent=tpPips.toFixed(1)+' '+as.unit;
+    document.getElementById('rr-result').style.display='flex';
+  } else {
+    document.getElementById('rr-result').style.display='none';
+  }
+}
+
+['capital','risk-dollar','entry','sl','tp'].forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+
+// Service Worker inline
+if('serviceWorker' in navigator){
+  const swContent=`
+    const CACHE='lotcalc-v2';
+    self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['/']))));
+    self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+  `;
+  const blob=new Blob([swContent],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob));
+}
+
+selectAsset('EURUSD');
+</script>
+</body>
+</html>
