@@ -1,0 +1,17 @@
+{
+  "background_color": "#0d0d0f",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "LotCalc Pro",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "LotCalc",
+  "start_url": "https://neongenecid.github.io/",
+  "theme_color": "#0d0d0f",
+  "description": "Calculateur de lot Forex, Or, Nasdaq",
+  "categories": [
+    "business",
+    "finance",
+    "productivity"
+  ]
+}
